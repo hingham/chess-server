@@ -1,23 +1,25 @@
 //import in the starting chessboard
 const chessBoard = require("./board.js");
-
+const Player = require("./player.js");
+const makeBoard = require('./board.js');
 // console.log('chessboard', chessBoard);
 
 class Game {
-    constructor (roomId, player1, player2){
-        this.player1 = player1;
-        this.player2 = player2;
+    constructor (roomId, socket1, player1, socket2, player2){
+        this[`${socket1}`] = player1;
+        this[`${socket2}`] = player2;
+        // this.turn = 
         this.roomId = roomId;
         this.moves = 0;
         this.winner = null;
-        this.board = chessBoard;
-        this.playerMove = {};
+        this.board = makeBoard();
+        this.playerMove = null;
     }
 
-    switchTurn(){
-        this.player1.turn = !this.player1.turn;
-        this.player2.turn = !this.player2.turn;
-    }
+    // switchTurn(socket1, socket2){
+    //     this[socket1].turn = !this.player1.turn;
+    //     this[socket2].turn = !this.player2.turn;
+    // }
 
     updateBoard () {
         //do work to update the matrix if the move was legal
@@ -36,17 +38,6 @@ class Game {
         //end the game
     }
 }
-
-let testBoard = new Game('test', 'h', 'a');
-
-let testPiece = testBoard.board[1][1];
-
-console.log('test', testPiece);
-
-let result = testPiece.checkAndUpdate(1, 4, testBoard.board);
-
-
-console.log('result');
 
 
 module.exports = Game;

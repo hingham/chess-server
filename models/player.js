@@ -1,7 +1,8 @@
 class Player {
-    constructor(name, type, currentTurn){
+    constructor(socket, name, team, currentTurn){
+        this.socket = socket;
         this.name= name;
-        this.type = type;
+        this.team = team;
         this.currentTurn = currentTurn;
         this.movesPlayed = 0;
         this.piecesCollected = [];

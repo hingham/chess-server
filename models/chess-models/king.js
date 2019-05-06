@@ -3,9 +3,11 @@
 const { ChessPieces } = require( "./chess-pieces.js");
 
 class King extends ChessPieces {
-  constructor(hex, xPos, yPos, type) {
-    super(hex, xPos, yPos, type);
+  constructor(hex, xPos, yPos, team) {
+    super(hex, xPos, yPos, team);
     this.validMoves = King.findMoves(xPos, yPos);
+    this.type = 'king';
+
   }
 
   static findMoves(x, y) {

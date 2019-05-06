@@ -5,8 +5,9 @@ const  b = require( "./chess-models/bishop.js");
 const  k = require( "./chess-models/king.js");
 const  q = require( "./chess-models/queen.js");
 
-module.exports = [
-  [null, 1, 2, 3, 4, 5, 6, 7, 8],
+module.exports = function makeBoard() {
+  return [
+  [null, 'a', 'b', 'c', 'd', 'e', 'f', 'h', 'i'],
   [
     1,
     r.lightRook1,
@@ -56,4 +57,4 @@ module.exports = [
     r.darkRook2
   ]
 ];
-
+}

@@ -2,9 +2,10 @@ const { ChessPieces } = require( "./chess-pieces.js");
 
 class Knight extends ChessPieces {
 
-  constructor(hex, xPos, yPos, type, checkAndMove, checkAndUpdate) {
-    super(hex, xPos, yPos, type, checkAndMove, checkAndUpdate);
+  constructor(hex, xPos, yPos, team) {
+    super(hex, xPos, yPos, team);
     this.validMoves = Knight.findMoves(this.xPos, this.yPos);
+    this.type = 'knight';
   }
 
   checkAndUpdate(x2, y2, matrix) {
