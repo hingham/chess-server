@@ -38,10 +38,10 @@ class Knight extends ChessPieces {
   }
 }
 
-let lightKnight1 = new Knight("&#9816;", 2, 1, "light");
-let lightKnight2 = new Knight("&#9816;", 7, 1, "light");
+// let lightKnight1 = new Knight("&#9816;", 2, 1, "light");
+// let lightKnight2 = new Knight("&#9816;", 7, 1, "light");
 
-let darkKnight1 = new Knight("&#9822;", 2, 8, "dark");
-let darkKnight2 = new Knight("&#9822;", 7, 8, "dark");
+// let darkKnight1 = new Knight("&#9822;", 2, 8, "dark");
+// let darkKnight2 = new Knight("&#9822;", 7, 8, "dark");
 
-module.exports =  {lightKnight1, lightKnight2, darkKnight1, darkKnight2 };
+module.exports =  {Knight};

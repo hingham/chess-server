@@ -55,10 +55,10 @@ class Rook extends ChessPieces {
   }
 }
 
-let lightRook1 = new Rook("&#9814;", 1, 1, "light");
-let lightRook2 = new Rook("&#9814;", 8, 1, "light");
+// let lightRook1 = new Rook("&#9814;", 1, 1, "light");
+// let lightRook2 = new Rook("&#9814;", 8, 1, "light");
 
-let darkRook1 = new Rook("&#9820;", 1, 8, "dark");
-let darkRook2 = new Rook("&#9820;", 8, 8, "dark");
+// let darkRook1 = new Rook("&#9820;", 1, 8, "dark");
+// let darkRook2 = new Rook("&#9820;", 8, 8, "dark");
 
-module.exports = {lightRook1, lightRook2, darkRook1, darkRook2};
+module.exports = {Rook};

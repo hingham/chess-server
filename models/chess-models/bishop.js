@@ -58,10 +58,10 @@ class Bishop extends ChessPieces {
   }
 }
 
-let lightBishop1 = new Bishop("&#9815;", 3, 1, "light");
-let lightBishop2 = new Bishop("&#9815;", 6, 1, "light");
+// let lightBishop1 = new Bishop("&#9815;", 3, 1, "light");
+// let lightBishop2 = new Bishop("&#9815;", 6, 1, "light");
 
-let darkBishop1 = new Bishop("&#9821;", 3, 8, "dark");
-let darkBishop2 = new Bishop("&#9821;", 6, 8, "dark");
+// let darkBishop1 = new Bishop("&#9821;", 3, 8, "dark");
+// let darkBishop2 = new Bishop("&#9821;", 6, 8, "dark");
 
-module.exports = { lightBishop1, lightBishop2, darkBishop1, darkBishop2 };
+module.exports = {Bishop};

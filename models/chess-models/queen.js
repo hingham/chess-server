@@ -45,6 +45,6 @@ class Queen extends ChessPieces {
   }
 }
 
-let lightQueen = new Queen("&#9812;", 4, 1, "light");
-let darkQueen = new Queen("&#9818", 5, 8, "dark");
-module.exports = {lightQueen, darkQueen};
+// let lightQueen = new Queen("&#9812;", 4, 1, "light");
+// let darkQueen = new Queen("&#9818", 5, 8, "dark");
+module.exports = {Queen};

@@ -19,13 +19,15 @@ const users = {};
 
 //listen for new connections
 io.on("connection", socket => {
-
+  socket.emit('showGames', games);
   //create a new game room and pass new game data to DOM
   socket.on("createGame", data => {
     console.log("room data: ", data.name);
     socket.join(`room-${data.name}`);
 
-    socket.broadcast.emit("connectToNewGame", data);
+    //add the game to the list so new users will see games when they connect
+    games[data.name] = null;
+    socket.broadcast.emit("connectToNewGame", {name: data.name, games: games} );
 
     //add player 1 to user object
     users[data.name] = new Player(socket.id, data.name, "light", true);
@@ -43,7 +45,6 @@ io.on("connection", socket => {
 
   socket.on("bothPlayersJoined", data => {
     users[data.player2] = new Player(socket.id, data.player2, "dark", false);
-    // let board = [...chessBoard];
 
     let newGame = new Game(
       data.player1,
@@ -51,17 +52,11 @@ io.on("connection", socket => {
       users[data.player1],
       users[data.player2].socket,
       users[data.player2],
-      []
     );
 
-
     games[data.player1] = newGame;
-
     let documentBoard = [...games[data.player1].board];
 
-    console.log('games object', games, 'user obj', users, documentBoard);
-
-    // console.log("the game object", newGame);
     io.in(`room-${data.room}`).emit("drawBoard", {
       gameId: data.player1,
       board: documentBoard,
@@ -70,15 +65,14 @@ io.on("connection", socket => {
       player2: data.player2
     });
     socket.emit("wait");
+    socket.broadcast.emit('removeGame', {gameId: data.player1});
   });
 
   //handle the turn played by either player and notify the other
   socket.on("playerMoved", data => {
     let myGame = games[data.gameId];
     myGame.playerMove = data.playerMove;
-    // console.log("myGame", myGame);
 
-    // console.log("with move,", data.playerMove);
     let sCol = data.playerMove.xStart;
     let sRow = data.playerMove.yStart;
     let eCol = data.playerMove.xEnd;
@@ -97,7 +91,7 @@ io.on("connection", socket => {
   
       //this should only be emited if the move is sucessful -- returns early from checkAndMove otherwise
       socket.emit("wait");
-      socket.broadcast.emit("go", data);
+      socket.broadcast.to(`room-${data.gameId}`).emit("go", data);
     }
   });
 

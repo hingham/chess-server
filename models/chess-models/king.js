@@ -36,7 +36,7 @@ class King extends ChessPieces {
   }
 }
 
-let lightKing = new King("&#9813;", 5, 1, "light");
-let darkKing = new King("&#9819;", 4, 8, "dark");
+// let lightKing = new King("&#9813;", 5, 1, "light");
+// let darkKing = new King("&#9819;", 4, 8, "dark");
 
-module.exports = {lightKing, darkKing}
+module.exports = {King}
