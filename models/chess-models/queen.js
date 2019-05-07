@@ -1,8 +1,9 @@
 const { ChessPieces } = require( "./chess-pieces.js");
 
 class Queen extends ChessPieces {
-  constructor(hex, xPos, yPos, type, checkAndMove, checkAndUpdate) {
-    super(hex, xPos, yPos, type, checkAndMove, checkAndUpdate);
+  constructor(hex, xPos, yPos, team) {
+    super(hex, xPos, yPos, team);
+    this.type = 'queen';
     this.validMoves = Queen.findMoves(xPos, yPos);
   }
 
@@ -44,6 +45,6 @@ class Queen extends ChessPieces {
   }
 }
 
-let lightQueen = new Queen("&#9812;", 4, 1, "light");
-let darkQueen = new Queen("&#9818", 5, 8, "dark");
-module.exports = {lightQueen, darkQueen};
+// let lightQueen = new Queen("&#9812;", 4, 1, "light");
+// let darkQueen = new Queen("&#9818", 5, 8, "dark");
+module.exports = {Queen};
