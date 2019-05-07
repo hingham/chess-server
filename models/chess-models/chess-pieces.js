@@ -32,9 +32,9 @@ class ChessPieces {
 
   //check if the move exists in the possible move object
   checkAndMove(x2, y2, matrix) {
-    if ( matrix[y2][x2] && matrix[this.yPos][this.xPos].type === 'pawn' ) {
+    if (matrix[y2][x2] && matrix[this.yPos][this.xPos].type === "pawn") {
       //if position is filled and it is valid, return true, else return false
-      console.log('the pawn is trying to capture', matrix[y2][x2]);
+      console.log("the pawn is trying to capture", matrix[y2][x2]);
       if (
         this.validCapture.hasOwnProperty(x2) &&
         this.validCapture[x2] === y2
@@ -61,6 +61,29 @@ class ChessPieces {
     return false;
   }
 
+  isCheckmate(matrix) {
+    //look at each piece in the valid moves to check if one could get the king
+    for (let x in this.validMoves) {
+      for (let y of this.validMoves[x]) {
+        console.log("looking for king", matrix[this.yPos][this.xPos]);
+        if (matrix[y][x] && matrix[y][x].type && matrix[y][x].type === "king") {
+          console.log("found king");
+          return true;
+        }
+      }
+    }
+    if (this.validCapture) {
+      for (let x in this.validCapture) {
+        let y = this.validCapture[x];
+        console.log("looking for king", matrix[this.yPos][this.xPos]);
+        if (matrix[y][x] && matrix[y][x].type && matrix[y][x].type === "king") {
+          console.log("found king");
+          return true;
+        }
+      }
+    }
+    return false;
+  }
   //update the nodes position on the board
   updatePos(x2, y2) {
     this.xPos = parseInt(x2, 10);

@@ -12,8 +12,8 @@ module.exports = function makeBoard() {
   let darkBishop1 = new b.Bishop("&#9821;", 3, 8, "dark");
   let darkBishop2 = new b.Bishop("&#9821;", 6, 8, "dark");
 
-  let lightKing = new k.King("&#9813;", 5, 1, "light");
-  let darkKing = new k.King("&#9819;", 4, 8, "dark");
+  let lightKing = new k.King("&#9813;", 5, 1, "light", 'king');
+  let darkKing = new k.King("&#9819;", 4, 8, "dark", 'king');
 
   let lightKnight1 = new kn.Knight("&#9816;", 2, 1, "light");
   let lightKnight2 = new kn.Knight("&#9816;", 7, 1, "light");
@@ -54,7 +54,7 @@ module.exports = function makeBoard() {
       lightKnight1,
       lightBishop1,
       lightQueen,
-      lightKing,
+      null,
       lightBishop2,
       lightKnight2,
       lightRook2
@@ -72,7 +72,7 @@ module.exports = function makeBoard() {
     ],
     [3, null, null, null, null, null, null, null, null],
     [4, null, null, null, null, null, null, null, null],
-    [5, null, null, null, null, null, null, null, null],
+    [5, null, null, null, null, lightKing, null, null, null],
     [6, null, null, null, null, null, null, null, null],
     [
       7,

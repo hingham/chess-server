@@ -2,7 +2,7 @@ const express = require("express");
 const socketio = require("socket.io");
 const http = require("http");
 
-require('dotenv').config();
+require("dotenv").config();
 
 const app = express();
 const server = http.Server(app);
@@ -14,22 +14,28 @@ const chessBoard = require("./models/board.js");
 
 app.use(express.static("public"));
 
-server.listen(process.env.PORT, () => console.log(`server up on port ${process.env.PORT}`));
+server.listen(process.env.PORT, () =>
+  console.log(`server up on port ${process.env.PORT}`)
+);
 
 const games = {};
+const openGames = {};
 const users = {};
 
 //listen for new connections
 io.on("connection", socket => {
-  socket.emit('showGames', games);
+  socket.emit("showGames", openGames);
   //create a new game room and pass new game data to DOM
   socket.on("createGame", data => {
     console.log("room data: ", data.name);
     socket.join(`room-${data.name}`);
 
     //add the game to the list so new users will see games when they connect
-    games[data.name] = null;
-    socket.broadcast.emit("connectToNewGame", {name: data.name, games: games} );
+    openGames[data.name] = null;
+    socket.broadcast.emit("connectToNewGame", {
+      name: data.name,
+      games: openGames
+    });
 
     //add player 1 to user object
     users[data.name] = new Player(socket.id, data.name, "light", true);
@@ -40,9 +46,13 @@ io.on("connection", socket => {
 
   ///connect the player 2 to the room request
   socket.on("joinGame", data => {
-    //wrap this in an if to check the total sockets in the room
+
+    //delete this game from open games object
+    delete openGames[data.room];
+
     socket.join(`room-${data.room}`);
-    socket.emit("player2", { room: data.room, name: data.name });
+    socket.emit("player2", { room: data.room, name: data.name});
+    socket.broadcast.emit("updateAvailableGames", { games: openGames });
   });
 
   socket.on("bothPlayersJoined", data => {
@@ -53,7 +63,7 @@ io.on("connection", socket => {
       users[data.player1].socket,
       users[data.player1],
       users[data.player2].socket,
-      users[data.player2],
+      users[data.player2]
     );
 
     games[data.player1] = newGame;
@@ -67,7 +77,6 @@ io.on("connection", socket => {
       player2: data.player2
     });
     socket.emit("wait");
-    socket.broadcast.emit('removeGame', {gameId: data.player1});
   });
 
   //handle the turn played by either player and notify the other
@@ -80,8 +89,16 @@ io.on("connection", socket => {
     let eCol = data.playerMove.xEnd;
     let eRow = data.playerMove.yEnd;
 
-    if(checkAndMove(socket, myGame, sRow, sCol, eRow, eCol)){
-      // myGame.switchTurn(myGame.);
+    if (checkAndMove(socket, myGame, sRow, sCol, eRow, eCol)) {
+      if (
+        data.checkmate &&
+        myGame.board[eRow][eCol].isCheckmate(myGame.board)
+      ) {
+        socket.emit("winner");
+        socket.broadcast.to(`room-${data.gameId}`).emit("loose");
+        return;
+      }
+
       let documentBoard = [...myGame.board];
       io.in(`room-${data.gameId}`).emit("drawBoard", {
         gameId: data.player1,
@@ -90,7 +107,7 @@ io.on("connection", socket => {
         player2: data.player2,
         playerMove: myGame.playerMove
       });
-  
+
       //this should only be emited if the move is sucessful -- returns early from checkAndMove otherwise
       socket.emit("wait");
       socket.broadcast.to(`room-${data.gameId}`).emit("go", data);
@@ -125,21 +142,18 @@ function checkAndMove(socket, game, startRow, startCol, endRow, endCol) {
     return false;
   }
   //if there is already a space there and it is of the same team
-  if (game.board[endRow][endCol] && game.board[endRow][endCol].team === game.board[startRow][startCol].team) {
-    socket.emit(
-      "unvalidMove",
-      "You already have a piece at that position."
-    );
+  if (
+    game.board[endRow][endCol] &&
+    game.board[endRow][endCol].team === game.board[startRow][startCol].team
+  ) {
+    socket.emit("unvalidMove", "You already have a piece at that position.");
     return false;
   }
   // console.log('the team', game.board[startRow][startCol], game[socket.id].team)
-  if(game.board[startRow][startCol].team !== game[socket.id].team){
-    socket.emit(
-      "unvalidMove",
-      "Please select one of your pieces to move."
-    );
+  if (game.board[startRow][startCol].team !== game[socket.id].team) {
+    socket.emit("unvalidMove", "Please select one of your pieces to move.");
     return false;
-  } 
+  }
   // console.log('type of:', game.board[startRow][startCol] instanceof LightPawn);
   let moved = game.board[startRow][startCol].checkAndUpdate(
     endCol,
