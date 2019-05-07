@@ -54,7 +54,7 @@ module.exports = function makeBoard() {
       lightKnight1,
       lightBishop1,
       lightQueen,
-      null,
+      lightKing,
       lightBishop2,
       lightKnight2,
       lightRook2
@@ -72,7 +72,7 @@ module.exports = function makeBoard() {
     ],
     [3, null, null, null, null, null, null, null, null],
     [4, null, null, null, null, null, null, null, null],
-    [5, null, null, null, null, lightKing, null, null, null],
+    [5, null, null, null, null, null, null, null, null],
     [6, null, null, null, null, null, null, null, null],
     [
       7,
