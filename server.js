@@ -2,6 +2,8 @@ const express = require("express");
 const socketio = require("socket.io");
 const http = require("http");
 
+require('dotenv').config();
+
 const app = express();
 const server = http.Server(app);
 const io = socketio(server);
@@ -12,7 +14,7 @@ const chessBoard = require("./models/board.js");
 
 app.use(express.static("public"));
 
-server.listen(4000, () => console.log("server up on port 4000"));
+server.listen(process.env.PORT, () => console.log(`server up on port ${process.env.PORT}`));
 
 const games = {};
 const users = {};
