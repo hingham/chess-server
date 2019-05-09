@@ -30,7 +30,9 @@ class LightPawn extends ChessPieces {
   }
 
   checkAndUpdate(x2, y2, matrix) {
-    if (this.checkAndMove(x2, y2, matrix)) {
+    let move = this.checkAndMove(x2, y2, matrix);
+    if (move) {
+      if(move === 'capture-king') return move;
       this.validCapture = LightPawn.canCapture(this.xPos, this.yPos);
       this.validMoves = LightPawn.findMoves(this.xPos, this.yPos);
       return true;
@@ -68,9 +70,10 @@ class DarkPawn extends ChessPieces {
   }
 
   checkAndUpdate(x2, y2, matrix) {
-    console.log("checking for valid move");
-
-    if (this.checkAndMove(x2, y2, matrix)) {
+    let move = this.checkAndMove(x2, y2, matrix);
+    if (move) {
+      console.log('move, check for king', move);
+      if(move === 'capture-king') return move;
       this.validCapture = DarkPawn.canCapture(this.xPos, this.yPos);
       this.validMoves = DarkPawn.findMoves(this.xPos, this.yPos);
       return true;
@@ -79,23 +82,6 @@ class DarkPawn extends ChessPieces {
   }
 }
 
-// let lightPawn1 = new LightPawn("&#9817;", 1, 2, "light");
-// let lightPawn2 = new LightPawn("&#9817;", 2, 2, "light");
-// let lightPawn3 = new LightPawn("&#9817;", 3, 2, "light");
-// let lightPawn4 = new LightPawn("&#9817;", 4, 2, "light");
-// let lightPawn5 = new LightPawn("&#9817;", 5, 2, "light");
-// let lightPawn6 = new LightPawn("&#9817;", 6, 2, "light");
-// let lightPawn7 = new LightPawn("&#9817;", 7, 2, "light");
-// let lightPawn8 = new LightPawn("&#9817;", 8, 2, "light");
-
-// let darkPawn1 = new DarkPawn("&#9823;", 1, 7, "dark");
-// let darkPawn2 = new DarkPawn("&#9823;", 2, 7, "dark");
-// let darkPawn3 = new DarkPawn("&#9823;", 3, 7, "dark");
-// let darkPawn4 = new DarkPawn("&#9823;", 4, 7, "dark");
-// let darkPawn5 = new DarkPawn("&#9823;", 5, 7, "dark");
-// let darkPawn6 = new DarkPawn("&#9823;", 6, 7, "dark");
-// let darkPawn7 = new DarkPawn("&#9823;", 7, 7, "dark");
-// let darkPawn8 = new DarkPawn("&#9823;", 8, 7, "dark");
 
 module.exports = {
   LightPawn, DarkPawn

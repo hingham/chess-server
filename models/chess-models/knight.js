@@ -9,8 +9,10 @@ class Knight extends ChessPieces {
   }
 
   checkAndUpdate(x2, y2, matrix) {
-    console.log("checking for valid move");
-    if (this.checkAndMove(x2, y2, matrix)) {
+    let move = this.checkAndMove(x2, y2, matrix);
+    if (move) {
+      console.log('move, check for king', move);
+      if(move === 'capture-king') return move;
       this.validMoves = Knight.findMoves(this.xPos, this.yPos);
       return true;
     }
@@ -38,10 +40,5 @@ class Knight extends ChessPieces {
   }
 }
 
-// let lightKnight1 = new Knight("&#9816;", 2, 1, "light");
-// let lightKnight2 = new Knight("&#9816;", 7, 1, "light");
-
-// let darkKnight1 = new Knight("&#9822;", 2, 8, "dark");
-// let darkKnight2 = new Knight("&#9822;", 7, 8, "dark");
 
 module.exports =  {Knight};

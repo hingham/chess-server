@@ -47,10 +47,12 @@ class Bishop extends ChessPieces {
 
   checkAndUpdate(x2, y2, matrix) {
     console.log("checking for valid move");
-    if (
-      this.checkCollision(x2, y2, matrix) &&
-      this.checkAndMove(x2, y2, matrix)
-    ) {
+    let collision = this.checkCollision(x2, y2, matrix);
+    let move = this.checkAndMove;
+    if (collision && move) {
+      if(move === 'capture-king'){
+        return move;
+      }
       this.validMoves = Bishop.findMoves(this.xPos, this.yPos);
       return true;
     }
