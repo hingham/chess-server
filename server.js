@@ -89,14 +89,21 @@ io.on("connection", socket => {
     let eCol = data.playerMove.xEnd;
     let eRow = data.playerMove.yEnd;
 
-    if (checkAndMove(socket, myGame, sRow, sCol, eRow, eCol)) {
-      if (
-        data.checkmate &&
-        myGame.board[eRow][eCol].isCheckmate(myGame.board)
-      ) {
+    let move = checkAndMove(socket, myGame, sRow, sCol, eRow, eCol); 
+    if (move) {
+      console.log('move', move);
+      if(move == 'capture-king'){
         socket.emit("winner");
         socket.broadcast.to(`room-${data.gameId}`).emit("loose");
         return;
+      }
+
+      if (
+        data.check &&
+        myGame.board[eRow][eCol].isCheck(myGame.board)
+      ) {
+        // socket.emit("winner");
+        socket.broadcast.to(`room-${data.gameId}`).emit("checked", 'You have been checked.');
       }
 
       let documentBoard = [...myGame.board];
@@ -160,7 +167,9 @@ function checkAndMove(socket, game, startRow, startCol, endRow, endCol) {
     endRow,
     game.board
   );
-  if (!moved) {
+  console.log('moved', moved);
+  if(moved === 'capture-king') return moved;
+  else if (!moved) {
     socket.emit("unvalidMove", "Not a valid move, please try again.");
     return false;
   }
